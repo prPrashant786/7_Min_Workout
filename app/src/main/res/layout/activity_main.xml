@@ -10,13 +10,13 @@
     <ImageView
         android:id="@+id/myimage"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/fl_star"
+        app:layout_constraintBottom_toTopOf="@+id/flstar"
         android:layout_width="match_parent"
         android:src="@drawable/img_main_page"
         android:layout_height="220dp"
         />
     <FrameLayout
-        android:id="@+id/fl_star"
+        android:id="@+id/flstar"
         android:layout_width="150dp"
         android:layout_height="150dp"
         app:layout_constraintTop_toBottomOf="@+id/myimage"
