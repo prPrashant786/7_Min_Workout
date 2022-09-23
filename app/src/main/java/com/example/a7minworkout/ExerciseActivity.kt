@@ -2,11 +2,16 @@ package com.example.a7minworkout
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.widget.Toast
 import com.example.a7minworkout.databinding.ActivityExerciseBinding
 
 class ExerciseActivity : AppCompatActivity() {
 
     private var binding : ActivityExerciseBinding? = null
+
+    private var restTimer: CountDownTimer? = null
+    private var restProgress = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +28,44 @@ class ExerciseActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        setUpResttimer()
         
+    }
+
+    private fun setUpResttimer(){
+        if (restTimer!=null){
+            restTimer?.cancel()
+            restProgress = 0
+        }
+        setRestProgressbar()
+    }
+
+
+    private fun setRestProgressbar(){
+        binding?.progressbar?.progress = restProgress
+// To implement CountDown
+        restTimer = object : CountDownTimer(11000,1000){// totaltime , after that time we do
+            override fun onTick(millisUntilFinished: Long) {
+                restProgress++;
+                binding?.progressbar?.progress = 11 - restProgress
+                binding?.tvTimer?.text =  (11 - restProgress).toString()
+            }
+
+            override fun onFinish() {
+                Toast.makeText(this@ExerciseActivity,"Lets Start",Toast.LENGTH_LONG).show()
+            }
+
+        }.start()
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (restTimer!=null){
+            restTimer?.cancel()
+            restProgress = 0
+        }
+        binding = null
     }
 }
