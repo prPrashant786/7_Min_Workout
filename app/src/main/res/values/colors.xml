@@ -9,9 +9,10 @@
     <color name="white">#ffffff</color>
 
 
-    <color name="start_color">#E80F88</color>
-    <color name="start_back">#790252</color>
-    <color name="app_back">#4C0033</color>
+    <color name="border">#2C3333</color>
+<!--    <color name="start_color">#E80F88</color>-->
+<!--    <color name="start_back">#790252</color>-->
+<!--    <color name="app_back">#4C0033</color>-->
 
     <color name="toolbarcolor">#838383</color>
 </resources>
