@@ -17,6 +17,10 @@ class ExerciseActivity : AppCompatActivity() {
     private var exersiseTimer: CountDownTimer? = null
     private var exersiseProgress = 0
 
+    private var exerciseList : ArrayList<EcerciseModel>? = null
+    private var exerciseidx : Int = -1;
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExerciseBinding.inflate(layoutInflater)
@@ -27,10 +31,12 @@ class ExerciseActivity : AppCompatActivity() {
         if (supportActionBar!=null){
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
-
         binding?.toolbarexer?.setNavigationOnClickListener {
             onBackPressed()
         }
+
+
+        exerciseList = Constant.defaultExerciseList()
 
         setUpResttimer()
         
@@ -38,16 +44,25 @@ class ExerciseActivity : AppCompatActivity() {
 
     private fun setUpResttimer(){
         binding?.flprogress?.visibility = View.VISIBLE
+        binding?.tvtittle?.visibility = View.VISIBLE
+
         binding?.flExerprogress?.visibility = View.INVISIBLE
+        binding?.ivImage?.visibility = View.GONE
+        binding?.tvExerciseName?.visibility = View.GONE
         if (restTimer!=null){
             restTimer?.cancel()
             restProgress = 0
         }
+        binding?.tvtittle?.text = "Next Exercise ${exerciseList?.get(exerciseidx+1)?.getName()}"
         setRestProgressbar()
     }
     private fun setUpExerciseTimer(){
         binding?.flprogress?.visibility = View.INVISIBLE
+        binding?.tvtittle?.visibility = View.INVISIBLE
+
         binding?.flExerprogress?.visibility = View.VISIBLE
+        binding?.ivImage?.visibility = View.VISIBLE
+        binding?.tvExerciseName?.visibility = View.VISIBLE
 
 
         if (exersiseTimer!=null){
@@ -55,12 +70,15 @@ class ExerciseActivity : AppCompatActivity() {
             exersiseProgress = 0
         }
 
+        binding?.tvExerciseName?.text = exerciseList?.get(exerciseidx)?.getName()
+        binding?.ivImage?.setImageResource(exerciseList!![exerciseidx].getImage())
+
         setExersiseProgress()
 
     }
 
     private fun setRestProgressbar(){
-        binding?.tvtittle?.text = "GET READY FOR EXERCISE"
+
         binding?.progressbar?.progress = restProgress
         // To implement CountDown
         restTimer = object : CountDownTimer(11000,1000){// totaltime , after that time we do
@@ -71,6 +89,7 @@ class ExerciseActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
+                exerciseidx++
                 setUpExerciseTimer()
             }
 
@@ -79,7 +98,7 @@ class ExerciseActivity : AppCompatActivity() {
 
 
     private fun setExersiseProgress(){
-        binding?.tvtittle?.text = "DO THE EXERCISE"
+
         binding?.Exerprogressbar?.progress = exersiseProgress
 
         exersiseTimer = object : CountDownTimer(30000,1000){// totaltime , after that time we do
@@ -90,8 +109,14 @@ class ExerciseActivity : AppCompatActivity() {
         }
 
             override fun onFinish() {
-                Toast.makeText(this@ExerciseActivity,"Exercise Done",Toast.LENGTH_LONG).show()
-
+                if (exerciseidx < exerciseList?.size!! - 1){
+                    setUpResttimer()
+                }
+                else {
+                    Toast.makeText(this@ExerciseActivity,
+                    "DONE",Toast.LENGTH_LONG).show()
+                    finish()
+                }
             }
 
         }.start()
