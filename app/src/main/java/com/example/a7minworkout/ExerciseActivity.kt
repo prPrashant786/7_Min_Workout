@@ -3,11 +3,15 @@ package com.example.a7minworkout
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.a7minworkout.databinding.ActivityExerciseBinding
+import java.util.*
+import kotlin.collections.ArrayList
 
-class ExerciseActivity : AppCompatActivity() {
+class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private var binding : ActivityExerciseBinding? = null
 
@@ -20,6 +24,8 @@ class ExerciseActivity : AppCompatActivity() {
     private var exerciseList : ArrayList<EcerciseModel>? = null
     private var exerciseidx : Int = -1;
 
+
+    private var tts : TextToSpeech? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +41,15 @@ class ExerciseActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        tts = TextToSpeech(this,this)
+
 
         exerciseList = Constant.defaultExerciseList()
 
         setUpResttimer()
         
     }
+
 
     private fun setUpResttimer(){
         binding?.flprogress?.visibility = View.VISIBLE
@@ -54,6 +63,8 @@ class ExerciseActivity : AppCompatActivity() {
             restProgress = 0
         }
         binding?.tvtittle?.text = "Next Exercise ${exerciseList?.get(exerciseidx+1)?.getName()}"
+
+
         setRestProgressbar()
     }
     private fun setUpExerciseTimer(){
@@ -70,9 +81,11 @@ class ExerciseActivity : AppCompatActivity() {
             exersiseProgress = 0
         }
 
+
+
         binding?.tvExerciseName?.text = exerciseList?.get(exerciseidx)?.getName()
         binding?.ivImage?.setImageResource(exerciseList!![exerciseidx].getImage())
-
+        speekout("START ${exerciseList?.get(exerciseidx)?.getName()}")
         setExersiseProgress()
 
     }
@@ -135,6 +148,28 @@ class ExerciseActivity : AppCompatActivity() {
             exersiseTimer?.cancel()
             exersiseProgress = 0
         }
+
+        if(tts!=null){
+            tts!!.stop()
+            tts!!.shutdown()
+        }
+
         binding = null
+    }
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS){
+            val result = tts?.setLanguage(Locale.US)
+            tts?.setVoice()
+
+            if (result == TextToSpeech.LANG_NOT_SUPPORTED || result == TextToSpeech.LANG_MISSING_DATA){
+                Log.e("TTS","LANG SPECIFIED IS NOT SUPPORTED")
+            }
+        }
+        else Log.e("TTS","Initialization Failed")
+    }
+
+    private fun speekout(text : String){
+        tts!!.speak(text,TextToSpeech.QUEUE_FLUSH,null,"")
     }
 }
