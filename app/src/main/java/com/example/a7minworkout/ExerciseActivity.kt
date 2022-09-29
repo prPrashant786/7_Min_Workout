@@ -160,7 +160,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS){
             val result = tts?.setLanguage(Locale.US)
-            tts?.setVoice()
+
 
             if (result == TextToSpeech.LANG_NOT_SUPPORTED || result == TextToSpeech.LANG_MISSING_DATA){
                 Log.e("TTS","LANG SPECIFIED IS NOT SUPPORTED")
