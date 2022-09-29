@@ -9,9 +9,10 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.a7minworkout.databinding.ActivityExerciseBinding
 import java.lang.Exception
-import java.net.URI
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -25,13 +26,16 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var exersiseTimer: CountDownTimer? = null
     private var exersiseProgress = 0
 
-    private var exerciseList : ArrayList<EcerciseModel>? = null
+    private var exerciseList : ArrayList<ExerciseModel>? = null
     private var exerciseidx : Int = -1;
 
 
     private var tts : TextToSpeech? = null
 
     private var player : MediaPlayer? = null
+
+
+    private var exerciseAdapter : ExerciseStatusAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +56,19 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         exerciseList = Constant.defaultExerciseList()
         setUpResttimer()
+
+        setupExerciseStatusRecyclerView()
         
     }
 
+    private fun setupExerciseStatusRecyclerView(){
+        binding?.rvExerStatus?.layoutManager =
+            LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+
+        exerciseAdapter = ExerciseStatusAdapter(exerciseList!!)
+
+        binding?.rvExerStatus?.adapter = exerciseAdapter
+    }
 
     private fun setUpResttimer(){
 
@@ -119,6 +133,10 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
             override fun onFinish() {
                 exerciseidx++
+
+                exerciseList!!.get(exerciseidx).setIsSelected(true)
+                exerciseAdapter!!.notifyDataSetChanged()
+
                 setUpExerciseTimer()
             }
 
@@ -138,6 +156,11 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
 
             override fun onFinish() {
+
+                exerciseList!!.get(exerciseidx).setIsSelected(false)
+                exerciseList!!.get(exerciseidx).setIsCompleted(true)
+                exerciseAdapter!!.notifyDataSetChanged()
+
                 if (exerciseidx < exerciseList?.size!! - 1){
                     setUpResttimer()
                 }

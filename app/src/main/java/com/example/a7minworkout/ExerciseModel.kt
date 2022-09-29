@@ -1,6 +1,6 @@
 package com.example.a7minworkout
 
-class EcerciseModel(
+class ExerciseModel(
     private var id : Int,
     private var name : String,
     private var image : Int,
