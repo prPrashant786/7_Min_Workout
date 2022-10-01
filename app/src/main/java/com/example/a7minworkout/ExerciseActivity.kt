@@ -1,5 +1,6 @@
 package com.example.a7minworkout
 
+import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +30,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var exerciseList : ArrayList<ExerciseModel>? = null
     private var exerciseidx : Int = -1;
 
+    private var restTime : Long = 1; // TODO: Make it 11
+    private var ExerciseTime : Long = 1; // TODO: Make it 30
 
     private var tts : TextToSpeech? = null
 
@@ -124,7 +127,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         binding?.progressbar?.progress = restProgress
         // To implement CountDown
-        restTimer = object : CountDownTimer(11000,1000){// totaltime , after that time we do
+        restTimer = object : CountDownTimer(restTime*1000,1000){// totaltime , after that time we do
             override fun onTick(millisUntilFinished: Long) {
                 restProgress++;
                 binding?.progressbar?.progress = 11 - restProgress
@@ -148,7 +151,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
         binding?.Exerprogressbar?.progress = exersiseProgress
 
-        exersiseTimer = object : CountDownTimer(30000,1000){// totaltime , after that time we do
+        exersiseTimer = object : CountDownTimer(ExerciseTime*1000,1000){// totaltime , after that time we do
         override fun onTick(millisUntilFinished: Long) {
             exersiseProgress++;
             binding?.Exerprogressbar?.progress = 30 - exersiseProgress
@@ -165,8 +168,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     setUpResttimer()
                 }
                 else {
-                    Toast.makeText(this@ExerciseActivity,
-                    "DONE",Toast.LENGTH_LONG).show()
+                    val intent = Intent(this@ExerciseActivity,finishAct::class.java)
+                    startActivity(intent)
                     finish()
                 }
             }

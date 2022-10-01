@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">7Min Workout</string>
+    <string name="donemsg">You Have Done The Workout!</string>
+    <string name="congomsg">Congratulations!</string>
 </resources>
