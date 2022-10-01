@@ -1,5 +1,6 @@
 package com.example.a7minworkout
 
+import android.app.Dialog
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
@@ -13,6 +14,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.a7minworkout.databinding.ActivityExerciseBinding
+import com.example.a7minworkout.databinding.DialogCustomBackButtonBinding
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
@@ -51,7 +53,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
         binding?.toolbarexer?.setNavigationOnClickListener {
-            onBackPressed()
+            customDialogeOpen()
         }
 
         tts = TextToSpeech(this,this)
@@ -217,5 +219,27 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private fun speekout(text : String){
         tts!!.speak(text,TextToSpeech.QUEUE_FLUSH,null,"")
+    }
+
+    override fun onBackPressed() {
+        customDialogeOpen()
+    }
+
+    private fun customDialogeOpen(){
+        val custoDialog = Dialog(this)
+        val DialogBinding = DialogCustomBackButtonBinding.inflate(layoutInflater)
+        custoDialog.setContentView(DialogBinding.root)
+
+        custoDialog.setCanceledOnTouchOutside(false)
+
+        DialogBinding.btYes.setOnClickListener {
+            this@ExerciseActivity.finish()
+            custoDialog.dismiss()
+        }
+        DialogBinding.btNo.setOnClickListener {
+            custoDialog.dismiss()
+        }
+
+        custoDialog.show()
     }
 }
