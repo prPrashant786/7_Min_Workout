@@ -20,6 +20,9 @@
         android:theme="@style/Theme.7MinWorkout"
         tools:targetApi="31">
         <activity
+            android:name=".bmiActivity"
+            android:exported="false" />
+        <activity
             android:name=".finishAct"
             android:exported="false" />
         <activity

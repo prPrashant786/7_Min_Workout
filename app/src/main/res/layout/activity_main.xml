@@ -35,4 +35,25 @@
 
     </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/flbmi"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flstar"
+        android:background="@drawable/item_color_custom_repel"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BMI"
+            android:layout_gravity="center"
+            android:textSize="@dimen/default_button_text"
+            android:textColor="@color/white"/>
+
+
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
