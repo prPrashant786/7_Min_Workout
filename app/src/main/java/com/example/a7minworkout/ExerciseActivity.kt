@@ -32,8 +32,8 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var exerciseList : ArrayList<ExerciseModel>? = null
     private var exerciseidx : Int = -1;
 
-    private var restTime : Long = 1; // TODO: Make it 11
-    private var ExerciseTime : Long = 1; // TODO: Make it 30
+    private var restTime : Long = 11; // TODO: Make it 11
+    private var ExerciseTime : Long = 30; // TODO: Make it 30
 
     private var tts : TextToSpeech? = null
 
